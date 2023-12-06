@@ -3,15 +3,19 @@ package com.melonkoding.blogapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.melonkoding.blogapp.adapters.PostAdapter;
+import com.melonkoding.blogapp.models.responses.PostResponse;
 import com.melonkoding.blogapp.viewmodels.PostViewModel;
 
 public class MainActivity extends AppCompatActivity {
+
+    PostResponse[] responses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +28,18 @@ public class MainActivity extends AppCompatActivity {
 
         postViewModel.getAllPosts().observe(this, postResponses -> {
             if (postResponses != null) {
-                PostAdapter postAdapter = new PostAdapter(getApplicationContext(), postResponses);
+                responses = postResponses;
+                PostAdapter postAdapter = new PostAdapter(getApplicationContext(), responses);
                 postAdapter.notifyDataSetChanged();
                 lvPosts.setAdapter(postAdapter);
                 pbProgress.setVisibility(View.GONE);
             }
+        });
+
+        lvPosts.setOnItemClickListener((adapterView, view, i, l) -> {
+            Intent intent = new Intent(MainActivity.this, DetailPostActivity.class);
+            intent.putExtra("POST", responses[i]);
+            startActivity(intent);
         });
     }
 }
