@@ -80,4 +80,24 @@ public class PostRepository {
         });
         return post;
     }
+
+    public LiveData<PostResponse> updatePost(int id, PostRequest postRequest) {
+        MutableLiveData<PostResponse> post = new MutableLiveData<>();
+        postService.updatePost(id, postRequest).enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                if (response.isSuccessful()) {
+                    post.setValue(response.body());
+                } else {
+                    post.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+                post.setValue(null);
+            }
+        });
+        return post;
+    }
 }

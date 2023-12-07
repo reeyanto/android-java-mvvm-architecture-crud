@@ -8,6 +8,7 @@ import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface PostService {
@@ -20,4 +21,7 @@ public interface PostService {
 
     @DELETE("/api/posts/{id}")
     Call<PostResponse> destroyPost(@Path("id") int postId);
+
+    @PUT("/api/posts/{id}")
+    Call<PostResponse> updatePost(@Path("id") int postId, @Body PostRequest postRequest);
 }

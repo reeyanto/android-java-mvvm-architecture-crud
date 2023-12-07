@@ -3,6 +3,7 @@ package com.melonkoding.blogapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -47,14 +48,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         lvPosts.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            postViewModel.destroyPost(responses[i].getId()).observe(MainActivity.this, postResponse -> {
-                if (postResponse != null) {
-                    Toast.makeText(MainActivity.this, "Post deleted!", Toast.LENGTH_SHORT).show();
-                    postAdapter.notifyDataSetChanged();
-                    lvPosts.setAdapter(postAdapter);
-                }
-            });
-            return true;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Data Operation")
+                .setMessage("Please select data operation for \""+ responses[i].getTitle() + "\"")
+                .setPositiveButton(R.string.delete, (dialogInterface, i1) -> {
+                    postViewModel.destroyPost(responses[i].getId()).observe(this, postResponse -> {
+                        if (postResponse != null) {
+                            Toast.makeText(this, "Data deleted!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                })
+                .setNegativeButton(R.string.update, (dialogInterface, i12) -> {
+                    Intent intent = new Intent(this, EditPostActivity.class);
+                    intent.putExtra("POST", responses[i]);
+                    startActivity(intent);
+                })
+                .show();
+                return true;
         });
 
         fabAdd.setOnClickListener(view -> {
