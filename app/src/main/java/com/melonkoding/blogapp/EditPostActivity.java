@@ -43,5 +43,9 @@ public class EditPostActivity extends AppCompatActivity {
                 }
             });
         });
+
+        btnCancel.setOnClickListener(view -> {
+            getOnBackPressedDispatcher().onBackPressed();
+        });
     }
 }
