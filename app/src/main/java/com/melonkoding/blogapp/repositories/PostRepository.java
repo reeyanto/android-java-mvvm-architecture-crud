@@ -3,6 +3,7 @@ package com.melonkoding.blogapp.repositories;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.melonkoding.blogapp.models.requests.PostRequest;
 import com.melonkoding.blogapp.models.responses.PostResponse;
 import com.melonkoding.blogapp.services.PostService;
 import com.melonkoding.blogapp.services.RetrofitClient;
@@ -37,5 +38,25 @@ public class PostRepository {
             }
         });
         return posts;
+    }
+
+    public LiveData<PostResponse> storePost(PostRequest postRequest) {
+        MutableLiveData<PostResponse> post = new MutableLiveData<>();
+        postService.storePost(postRequest).enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                if (response.isSuccessful()) {
+                    post.setValue(response.body());
+                } else {
+                    post.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+                post.setValue(null);
+            }
+        });
+        return post;
     }
 }

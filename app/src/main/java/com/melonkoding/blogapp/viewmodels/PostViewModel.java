@@ -3,6 +3,7 @@ package com.melonkoding.blogapp.viewmodels;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.melonkoding.blogapp.models.requests.PostRequest;
 import com.melonkoding.blogapp.models.responses.PostResponse;
 import com.melonkoding.blogapp.repositories.PostRepository;
 
@@ -18,5 +19,9 @@ public class PostViewModel extends ViewModel {
 
     public LiveData<PostResponse[]> getAllPosts() {
         return posts;
+    }
+
+    public LiveData<PostResponse> storePost(PostRequest postRequest) {
+        return postRepository.storePost(postRequest);
     }
 }

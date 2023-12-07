@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Blog App - MVVM Architecture</string>
+    <string name="post_title">Post Title</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
