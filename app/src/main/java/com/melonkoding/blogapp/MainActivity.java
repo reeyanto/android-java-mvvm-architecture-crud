@@ -1,6 +1,5 @@
 package com.melonkoding.blogapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -9,7 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.window.OnBackInvokedDispatcher;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.melonkoding.blogapp.adapters.PostAdapter;
@@ -19,6 +18,7 @@ import com.melonkoding.blogapp.viewmodels.PostViewModel;
 public class MainActivity extends AppCompatActivity {
 
     PostResponse[] responses;
+    PostAdapter postAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         postViewModel.getAllPosts().observe(this, postResponses -> {
             if (postResponses != null) {
                 responses = postResponses;
-                PostAdapter postAdapter = new PostAdapter(getApplicationContext(), responses);
+                postAdapter = new PostAdapter(getApplicationContext(), responses);
                 postAdapter.notifyDataSetChanged();
                 lvPosts.setAdapter(postAdapter);
                 pbProgress.setVisibility(View.GONE);
@@ -44,6 +44,17 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, DetailPostActivity.class);
             intent.putExtra("POST", responses[i]);
             startActivity(intent);
+        });
+
+        lvPosts.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            postViewModel.destroyPost(responses[i].getId()).observe(MainActivity.this, postResponse -> {
+                if (postResponse != null) {
+                    Toast.makeText(MainActivity.this, "Post deleted!", Toast.LENGTH_SHORT).show();
+                    postAdapter.notifyDataSetChanged();
+                    lvPosts.setAdapter(postAdapter);
+                }
+            });
+            return true;
         });
 
         fabAdd.setOnClickListener(view -> {

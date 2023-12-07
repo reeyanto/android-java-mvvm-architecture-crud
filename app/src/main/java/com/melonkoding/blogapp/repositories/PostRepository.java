@@ -59,4 +59,25 @@ public class PostRepository {
         });
         return post;
     }
+
+
+    public LiveData<PostResponse> destroyPost(int postId) {
+        MutableLiveData<PostResponse> post = new MutableLiveData<>();
+        postService.destroyPost(postId).enqueue(new Callback<PostResponse>() {
+            @Override
+            public void onResponse(Call<PostResponse> call, Response<PostResponse> response) {
+                if (response.isSuccessful()) {
+                    post.setValue(response.body());
+                } else {
+                    post.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PostResponse> call, Throwable t) {
+                post.setValue(null);
+            }
+        });
+        return post;
+    }
 }

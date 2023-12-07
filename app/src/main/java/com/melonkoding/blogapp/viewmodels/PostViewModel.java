@@ -24,4 +24,8 @@ public class PostViewModel extends ViewModel {
     public LiveData<PostResponse> storePost(PostRequest postRequest) {
         return postRepository.storePost(postRequest);
     }
+
+    public LiveData<PostResponse> destroyPost(int postId) {
+        return postRepository.destroyPost(postId);
+    }
 }
