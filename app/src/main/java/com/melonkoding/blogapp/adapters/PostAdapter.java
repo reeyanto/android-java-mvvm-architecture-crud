@@ -10,24 +10,26 @@ import android.widget.TextView;
 import com.melonkoding.blogapp.R;
 import com.melonkoding.blogapp.models.responses.PostResponse;
 
+import java.util.List;
+
 public class PostAdapter extends BaseAdapter {
 
     private Context context;
-    private PostResponse[] postResponses;
+    private List<PostResponse> postResponses;
 
-    public PostAdapter(Context context, PostResponse[] postResponses) {
+    public PostAdapter(Context context, List<PostResponse> postResponses) {
         this.context = context;
         this.postResponses = postResponses;
     }
 
     @Override
     public int getCount() {
-        return postResponses.length;
+        return postResponses.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return postResponses[i];
+        return postResponses.get(i);
     }
 
     @Override
@@ -45,8 +47,8 @@ public class PostAdapter extends BaseAdapter {
         TextView tvDescription = postView.findViewById(R.id.tv_description);
 
         // set value
-        tvTitle.setText(postResponses[i].getTitle());
-        tvDescription.setText(postResponses[i].getDescription());
+        tvTitle.setText(postResponses.get(i).getTitle());
+        tvDescription.setText(postResponses.get(i).getDescription());
 
         return postView;
     }

@@ -3,6 +3,8 @@ package com.melonkoding.blogapp.services;
 import com.melonkoding.blogapp.models.requests.PostRequest;
 import com.melonkoding.blogapp.models.responses.PostResponse;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -14,7 +16,7 @@ import retrofit2.http.Path;
 public interface PostService {
 
     @GET("/api/posts")
-    Call<PostResponse[]> getAllPosts();
+    Call<List<PostResponse>> getAllPosts();
 
     @POST("/api/posts")
     Call<PostResponse> storePost(@Body PostRequest postRequest);

@@ -16,9 +16,11 @@ import com.melonkoding.blogapp.adapters.PostAdapter;
 import com.melonkoding.blogapp.models.responses.PostResponse;
 import com.melonkoding.blogapp.viewmodels.PostViewModel;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
-    PostResponse[] responses;
+    List<PostResponse> responses;
     PostAdapter postAdapter;
 
     @Override
@@ -43,24 +45,26 @@ public class MainActivity extends AppCompatActivity {
 
         lvPosts.setOnItemClickListener((adapterView, view, i, l) -> {
             Intent intent = new Intent(MainActivity.this, DetailPostActivity.class);
-            intent.putExtra("POST", responses[i]);
+            intent.putExtra("POST", responses.get(i));
             startActivity(intent);
         });
 
         lvPosts.setOnItemLongClickListener((adapterView, view, i, l) -> {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Data Operation")
-                .setMessage("Please select data operation for \""+ responses[i].getTitle() + "\"")
+                .setMessage("Please select data operation for \""+ responses.get(i).getTitle() + "\"")
                 .setPositiveButton(R.string.delete, (dialogInterface, i1) -> {
-                    postViewModel.destroyPost(responses[i].getId()).observe(this, postResponse -> {
+                    postViewModel.destroyPost(responses.get(i).getId()).observe(this, postResponse -> {
                         if (postResponse != null) {
                             Toast.makeText(this, "Data deleted!", Toast.LENGTH_SHORT).show();
+                            responses.remove(i);
+                            postAdapter.notifyDataSetChanged();
                         }
                     });
                 })
                 .setNegativeButton(R.string.update, (dialogInterface, i12) -> {
                     Intent intent = new Intent(this, EditPostActivity.class);
-                    intent.putExtra("POST", responses[i]);
+                    intent.putExtra("POST", responses.get(i));
                     startActivity(intent);
                 })
                 .show();

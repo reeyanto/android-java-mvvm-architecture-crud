@@ -7,17 +7,19 @@ import com.melonkoding.blogapp.models.requests.PostRequest;
 import com.melonkoding.blogapp.models.responses.PostResponse;
 import com.melonkoding.blogapp.repositories.PostRepository;
 
+import java.util.List;
+
 public class PostViewModel extends ViewModel {
 
     private PostRepository postRepository;
-    private LiveData<PostResponse[]> posts;
+    private LiveData<List<PostResponse>> posts;
 
     public PostViewModel() {
         postRepository = new PostRepository();
         posts = postRepository.getAllPosts();
     }
 
-    public LiveData<PostResponse[]> getAllPosts() {
+    public LiveData<List<PostResponse>> getAllPosts() {
         return posts;
     }
 
